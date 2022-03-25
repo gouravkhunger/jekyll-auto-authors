@@ -1,26 +1,31 @@
 # Jekyll::AutoAuthors
 
-This plugin integrates with [`jekyll-paginate-v2`](https://github.com/sverrirs/jekyll-paginate-v2) to provide seamless multiple authors support for jekyll powered publications.
+This plugin integrates with the `jekyll-paginate-v2` gem to provide seamless multiple authors support for jekyll powered publications.
 
 Supporting multiple authors inside a jekyll plugin has been a challenge from long. Here are some references to the issue dating to a long time ago:
 
+- [Author archive pages in Jekyll](https://stackoverflow.com/q/9027527/9819031)
 - [Trying to generate author pages in Jekyll plugin for pagination](https://stackoverflow.com/q/23439944/9819031)
 - [How to paginate posts by author](https://stackoverflow.com/q/51744240/9819031)
 
-I faces similar problems while managing multiple authors at [Genics Blog](https://genicsblog.com), so I came up with this plugin that solves the problem!
+I faced similar problems while managing multiple authors at [Genics Blog](https://genicsblog.com), so I came up with this plugin that solves the problem!
 
-## How it works?
+## When to use it?
 
-We start with the goal in mind:
+If you want to achieve any of the following:
 
-- We need to show author pages that list an author's details.
-- The details can be anything, like name, bio, portfolio website, social media links, etc.
-- Then we want to show a list of posts by that author.
-- The posts must be paginated. This means if there are a lot of posts, we want to show next and previous buttons for navigation.
-- We don't want to manually write anything implementation for the generated pages.
-- We just want to drop in a `author: username` to the frontmatter of post and it should add the post to the author's page.
+- Show author pages that list an author's details.
+  
+  The details can be anything, like name, bio, portfolio website, social media links, etc.
 
-This plugin does exactly this!
+- Show a list of posts by that author.
+
+  The posts must be paginated. This means if there are a lot of posts, we want to show next and previous buttons for navigation.
+
+- You don't want to manually write anything implementation for the generated pages.
+- You just want to drop in a `author: username` to the frontmatter of post and it should add the post to the author's page.
+
+The plugin does exactly this!
 
 ## Installation
 
@@ -33,7 +38,7 @@ group :jekyll_plugins do
 end
 ```
 
-Then, enable the plugin by adding it to the plugins section in the _config.yml file:
+Then, enable the plugin by adding it to the plugins section in the `_config.yml` file:
 
 ```yml
 plugins:
@@ -45,13 +50,13 @@ And then execute:
 
     $ bundle install
 
-**Note**: This project depends on utilities inside the `jekyll-paginate-v2` plugin to override the autopage and pagination behaviour. Please make sure to install and enable it first.
+**Note**: This project depends on utilities inside the [`jekyll-paginate-v2`](https://github.com/sverrirs/jekyll-paginate-v2) plugin to override the autopage and pagination behaviour. Please make sure to install and enable it first.
 
 ## Usage
 
 This plugin fits well inside the configuration for `jekyll-paginate-v2` plugin.
 
-First, you need to set pagination configuration inside `_config.yml` file. This is similar to what the `jekyll-paginate-v2` plugin does.
+First, you need to set pagination configuration inside `_config.yml` file. This is similar to what the pagination plugin does.
 
 ```yml
 pagination:
@@ -63,11 +68,11 @@ pagination:
   sort_reverse: true
 ```
 
-This is pagination for the posts. Each page should get 9 posts at max. The permalink of first page is same, but the later pages get `/page/:num` appended to it. `:num` gets converted to the page number.
+This configuration will be used for the pagination on the generated author pages. The above example defines that each page should get 9 posts at max. The permalink of first page is same, but the later pages get `/page/:num` appended to it. `:num` gets converted to the page number.
 
 To learn more about the pagination setup, please refer to the [pagionation guide](https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-GENERATOR.md) of `jekyll-paginate-v2` plugin.
 
-Now we'll define the autopages config for authors. `jekyll-paginate-v2` has autopage support for tags, categories and collections by default. [Read more on Autopages](https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-AUTOPAGES.md)
+Now we'll define the autopages config for authors. `jekyll-paginate-v2` has autopage support for tags, categories and collections by default. [Read more on Autopages](https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-AUTOPAGES.md).
 
 But it doesn't support autopages for authors. Adding the `jekyll-auto-authors` plugin makes it possible!
 
@@ -76,7 +81,7 @@ Define an `autopages` block to set up author autopages:
 ```yml
 autopages:
 
-  # Other autopage configs stay as it is
+  # Other autopage configs stay the same
 
   authors:
     enabled: true
@@ -92,9 +97,9 @@ autopages:
 
 That's it for the autopages and pagination configuration.
 
-For an example, let's take a basic  `_data/authors.yml` file. We define usernames at the top level. The best part about this plugin is it provides you the freedom to define data as you want.
+For an example, let's take a minimal  `_data/authors.yml` file. Though usernames should be defined at the top level, the plugin provides you the freedom to define particular author's data as you want.
 
-Once you define the usernames, all the data is passed on to the liquid template so you can render it as you wish!
+Once you define the usernames, all the data for an author is passed on to the liquid template so you can render it as you wish!
 
 ```yml
 username1:
@@ -127,26 +132,27 @@ Let's define a basic template for the `author.html` layout so you get a gist of 
 {% assign author = page.pagination.author_data %}
 <!--
   Now you can use the author variable anyhow.
-  It has all the data as defined inside _data/authors.yml for the username.
+  It has all the data as defined inside _data/authors.yml for the current username.
 -->
 
   <head>
-    <!-- See how we can -->
+    <!-- See how we can use values inside the author variable. -->
     <meta name="description" content={{ author.bio }}>
     <!-- other stuff -->
   </head>
 
   <body>
     <h1>{{ author.name }}</h1>
+    <p>{{ author.bio }}</p>
     <a href="{{ author.website }}">Portfolio</a>
     {% assign links = author.socials %}
     <a href="{{ link.twitter }}">Twitter</a>
     <a href="{{ link.github }}">GitHub</a>
 
     <!--
-      The main logic for posts resides here.
+      The main logic for rendering an author's posts resides here.
       The plugin exposes a paginator object that you can use to loop through the post.
-      It handles all the pagination stuff behind the scenes for you.
+      It handles all the pagination logic for you.
     -->
     {% for post in paginator.posts %}
       {% include postbox.html %}
@@ -171,13 +177,23 @@ A random post.
 
 Once you run the build, you'll see the author page for `username2` come inside the `_site/author/username2/` directory. If there are a lot of posts by username2, it will generate pagination pages as defined in the `pagination` block of `_config.yml` file.
 
+## How does it work?
+
+The `jekyll-paginate-v2` plugin does a great job at paginating tags, categories and collections. But it doesn't include support for author pagination and autopages. And the project hasn't received much of updates lately, and the existing issues and PRs are stale because of which I decided to make an extension plugin for it.
+
+This plugin uses the utilty classes and functions from the `jekyll-paginate-v2` plugin to add custom logic for author page generation.
+
+When you run the site, the plugin will go through the unique authors in the site, generating an initial temporary author page for them. Then it loops through the generated authro pages and processes the page for pagination. Simultaneously, it also passes the author data from the data file to the page to render the author details.
+
+Once the pagination pages are generated, they are written to the `_site` folder with the permalink structure you define.
+
 ## Need some inspiration?
 
 We are using this plugin to generate the author pages at [Genics Blog](https://genicsblog.com). Have a look at our [`_config.yml`](https://github.com/genicsblog/theme-files/blob/main/_config.yml) file to see how it works.
 
 ## The Author
 
-I am a 16 years old self-taught software developer from India! I am a passionate app developer working on a lot of different kinds of project. If you like this project, let me know by supporting me!
+I am a 16 years old self-taught software developer from India! I am a passionate app developer working on a lot of different kind of projects. If you like this plugin, let me know by supporting me!
 
 The easiest no-brainer way would be to :star2: this plugin by pressing the button on the top right of this page, and [follow me](https://github.com/gouravkhunger) on GitHub. Or consider [buying me a Ko-fi](https://ko-fi.com/gouravkhunger)!
 
