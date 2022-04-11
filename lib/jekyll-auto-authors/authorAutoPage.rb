@@ -10,8 +10,15 @@ module Jekyll
         # Construct the lambda function to set the config values this
         # function receives the pagination config hash and manipulates it.
         set_autopage_data_lambda = lambda do | in_config |
-          author_data = YAML::load(File.read(autopage_config["data"]))
           in_config["author"] = author
+
+          if autopage_config["data"].nil?
+            return
+          end
+
+          # if a data file containing authors is not nil, transfer it to paginator object
+          # so that it can be used in the pagination template
+          author_data = YAML::load(File.read(autopage_config["data"]))
           in_config["author_data"] = author_data[author_name]
         end
 

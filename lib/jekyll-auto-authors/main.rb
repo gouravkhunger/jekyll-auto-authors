@@ -31,11 +31,12 @@ module Jekyll
         # Lambda that created the author page for a given author.
         # will be passed to PaginateV2::Autopages for processing.
         createauthorpage_lambda = lambda do | autopage_author_config, pagination_config, layout_name, author, author_original_name |
-          author_data = YAML::load(File.read(autopage_author_config["data"]))[author_original_name]
+          if !autopage_author_config["data"].nil?
+            author_data = YAML::load(File.read(autopage_author_config["data"]))[author_original_name]
 
-          if author_data.nil?
-            Jekyll.logger.warn "Author Pages:", "Author data for "#{author_original_name}" not found. Skipping author page..."
-            return
+            if author_data.nil?
+              Jekyll.logger.warn "Author Pages:", "Author data for '#{author_original_name}' not found. Page will be generated without data."
+            end
           end
 
           site.pages << AuthorAutoPage.new(site, site.dest, autopage_author_config, pagination_config, layout_name, author, author_original_name)

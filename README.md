@@ -97,9 +97,13 @@ autopages:
 
 That's it for the autopages and pagination configuration.
 
-For an example, let's take a minimal  `_data/authors.yml` file. Though usernames should be defined at the top level, the plugin provides you the freedom to define particular author's data as you want.
+### Optional
 
-Once you define the usernames, all the data for an author is passed on to the liquid template so you can render it as you wish!
+You might want to render additional details for each author other than the username.
+
+For an example, let's take a minimal `_data/authors.yml` file. Usernames should be defined at the top level. The plugin provides you the freedom to define particular author's data as you want.
+
+Once you define the usernames, all the data for an author is passed on to the liquid template inside `page.pagination.author_data` variable so you can render it as you wish!
 
 ```yml
 username1:
@@ -121,14 +125,16 @@ username2:
 # and so on
 ```
 
-The data for the user is passed on to the template, inside the `page.pagination.author_data` variable.
-
 Let's define a basic template for the `author.html` layout so you get a gist of how to use it:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- This has the username of author. The one that you set with "author: name" in front-matter-->
+{% assign author_username = page.pagination.author %}
+
+<!-- Use page.pagination.author_data only if you have data file setup correctly -->
 {% assign author = page.pagination.author_data %}
 <!--
   Now you can use the author variable anyhow.
