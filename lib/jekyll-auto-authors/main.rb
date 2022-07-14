@@ -26,8 +26,6 @@ module Jekyll
           return
         end
 
-        Jekyll.logger.info "Author Pages:", "Generating..."
-
         # Lambda that created the author page for a given author.
         # will be passed to PaginateV2::Autopages for processing.
         createauthorpage_lambda = lambda do | autopage_author_config, pagination_config, layout_name, author, author_original_name |
@@ -58,6 +56,31 @@ module Jekyll
         PaginateV2::AutoPages.autopage_create(
           autopage_config, pagination_config, posts_to_use, "authors", "author", createauthorpage_lambda
         )
+
+        # Set of authors for whom autopages have been created
+        finished_pages = Set.new
+
+        posts_to_use.each do | post |
+          next if post.data["author"].nil? || finished_pages.include?(post.data["author"])
+          finished_pages << post.data["author"]
+        end
+
+        if !authors_config["data"].nil?
+          # if a data file containing authors is not nil, then iterate through the specified
+          # authors to build author pages for them, even if they don't have posts yet.
+          author_data = YAML::load(File.read(authors_config["data"]))
+
+          author_data.each do | author, data |
+            if !finished_pages.include?(author)
+              # create pages for pending authors with specified layouts
+              authors_config['layouts'].each do | layout_name |
+                createauthorpage_lambda.call(authors_config, pagination_config, layout_name, author, author)
+              end
+
+              finished_pages << author
+            end
+          end
+        end
 
         # Now auto pages for authors have been created, we can generate the pagination logic.
 
@@ -133,7 +156,8 @@ module Jekyll
 
               pagination_posts.sort!{ |a,b| 
                 PaginateV2::Generator::Utils.sort_values(
-                  PaginateV2::Generator::Utils.sort_get_post_data(a.data, sort_field), PaginateV2::Generator::Utils.sort_get_post_data(b.data, sort_field)
+                  PaginateV2::Generator::Utils.sort_get_post_data(a.data, sort_field),
+                  PaginateV2::Generator::Utils.sort_get_post_data(b.data, sort_field)
                 )
               }
 
@@ -256,6 +280,7 @@ module Jekyll
           end
         end
 
+        Jekyll.logger.info "Author Pages:", "Generated autopages for #{finished_pages.size} author(s)"
       end
     end
 
