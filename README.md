@@ -34,6 +34,7 @@ Add this line to your application's Gemfile inside the `jekyll_plugins` group:
 ```ruby
 group :jekyll_plugins do
     # other gems
+    gem "jekyll-paginate-v2"
     gem "jekyll-auto-authors"
 end
 ```
@@ -43,6 +44,7 @@ Then, enable the plugin by adding it to the plugins section in the `_config.yml`
 ```yml
 plugins:
     # - other plugins
+    - jekyll-paginate-v2
     - jekyll-auto-authors
 ```
 
@@ -82,7 +84,16 @@ Define an `autopages` block to set up author autopages:
 autopages:
 
   # Other autopage configs stay the same
+  enabled: true
 
+  categories:
+    enabled: false
+  tags:
+    enabled: false
+  collections:
+    enabled: false
+
+  # Add this block
   authors:
     enabled: true
     data: '_data/authors.yml' # Data file with the author details
@@ -163,6 +174,26 @@ Let's define a basic template for the `author.html` layout so you get a gist of 
     {% for post in paginator.posts %}
       {% include postbox.html %}
     {% endfor %}
+
+    <!--
+      If there are more pages rendered for current author's posts, show
+      "Previous" / "Next" links for navigation
+    -->
+    {% if paginator.total_pages > 1 %}
+    <ul>
+      {% if paginator.previous_page %}
+      <li>
+        <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}">Previous</a>
+      </li>
+      {% endif %}
+
+      {% if paginator.next_page %}
+      <li>
+        <a href="{{ paginator.next_page_path | prepend: site.baseurl }}">Next</a>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
   </body>
 
 </html>
@@ -199,9 +230,9 @@ We are using this plugin to generate the author pages at [Genics Blog](https://g
 
 ## The Author
 
-I am a 16 years old self-taught software developer from India! I am a passionate app developer working on a lot of different kind of projects. If you like this plugin, let me know by supporting me!
+I am a self-taught software developer from India! I am a passionate app developer working on a lot of different kind of projects. If you like this plugin, let me know by supporting me!
 
-The easiest no-brainer way would be to :star2: this plugin by pressing the button on the top right of this page, and [follow me](https://github.com/gouravkhunger) on GitHub. Or consider [buying me a Ko-fi](https://ko-fi.com/gouravkhunger)!
+The easiest no-brainer way would be to :star2: this plugin by pressing the button on the top right of this page, and [follow me](https://github.com/gouravkhunger) on GitHub. Or consider [buying me a coffee](https://paypal.me/gouravkhunger)!
 
 I write frequent programming related content on [Genics Blog](https://genicsblog.com/author/gouravkhunger/). You can contact me through [our Discord server](https://discord.genicsblog.com).
 
@@ -212,4 +243,3 @@ I write frequent programming related content on [Genics Blog](https://genicsblog
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://github.com/gouravkhunger/jekyll-auto-authors/blob/main/LICENSE).
-
