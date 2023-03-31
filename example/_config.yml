@@ -1,0 +1,71 @@
+title: Jekyll::AutoAuthors
+description: >-
+  This is an example Jekyll site to showcase how to use the jekyll-auto-authors plugin simplify adding multiple authors support to Jekyll powered blogs.
+url: "https://hostname.gouravkhunger.me"
+baseurl: ""
+
+author:
+  name: Gourav Khunger
+  email: gouravkhunger18[at]gmail.com
+
+theme: minima
+
+minima:
+  social_links:
+    - { platform: github,  user_url: "https://link.gouravkhunger.me/github" }
+    - { platform: youtube, user_url: "https://link.gouravkhunger.me/youtube" }
+    - { platform: twitter, user_url: "https://link.gouravkhunger.me/twitter" }
+    - { platform: stackoverflow, user_url: "https://link.gouravkhunger.me/stackoverflow" }
+
+header_pages:
+  - /author/janedoe/index.html
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-paginate-v2
+  - jekyll-auto-authors
+
+pagination:
+  enabled: true
+  per_page: 5
+  permalink: '/page/:num/'
+  title: ':title - page :num'
+  sort_field: 'date'
+  sort_reverse: true
+
+autopages:
+  enabled: true
+
+  categories:
+    enabled: false
+  tags:
+    enabled: false
+  collections:
+    enabled: false
+
+  # Other autopage configs stay the same
+  authors:
+    enabled: true
+    data: '_data/authors.yml' # Data file with the author details
+    layouts: 
+      - 'author.html' # We'll define this layout later
+    title: 'Posts by :author'
+    permalink: '/author/:author/'
+    slugify:
+      mode: 'default' # choose from [raw, default, pretty, ascii or latin]
+      cased: true # if true, the uppercase letters in slug will be converted to lowercase ones.
+
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - LICENSE
+  - README.md

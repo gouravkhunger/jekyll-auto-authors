@@ -1,0 +1,15 @@
+johndoe:
+  name: "John Doe"
+  bio: "John Doe is a software engineer."
+  email: "john@example.com"
+  socials:
+    github: "john-doe"
+    twitter: "john_doe"
+
+janedoe:
+  name: "Jane Doe"
+  bio: "Jane Doe is a systems engineer."
+  email: "jane@example.com"
+  socials:
+    github: "jane-doe"
+    twitter: "jane_doe"

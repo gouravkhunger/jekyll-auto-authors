@@ -1,9 +1,11 @@
-PATH
-  remote: .
+GIT
+  remote: https://github.com/jekyll/minima.git
+  revision: 2863624b903b17f838d6ce8d2f77900fa9d3c864
   specs:
-    jekyll-auto-authors (1.0.2)
-      jekyll (>= 3.0.0)
-      jekyll-paginate-v2 (>= 3.0.0)
+    minima (3.0.0.dev)
+      jekyll (>= 3.5, < 5.0)
+      jekyll-feed (~> 0.9)
+      jekyll-seo-tag (~> 2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -38,10 +40,17 @@ GEM
       safe_yaml (~> 1.0)
       terminal-table (>= 1.8, < 4.0)
       webrick (~> 1.7)
+    jekyll-auto-authors (1.0.2)
+      jekyll (>= 3.0.0)
+      jekyll-paginate-v2 (>= 3.0.0)
+    jekyll-feed (0.17.0)
+      jekyll (>= 3.7, < 5.0)
     jekyll-paginate-v2 (3.0.0)
       jekyll (>= 3.0, < 5.0)
     jekyll-sass-converter (3.0.0)
       sass-embedded (~> 1.54)
+    jekyll-seo-tag (2.8.0)
+      jekyll (>= 3.8, < 5.0)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
     kramdown (2.4.0)
@@ -73,8 +82,13 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
-  bundler (>= 2.0.0)
-  jekyll-auto-authors!
+  jekyll
+  jekyll-auto-authors
+  jekyll-feed
+  jekyll-paginate-v2
+  jekyll-seo-tag
+  minima!
+  webrick
 
 BUNDLED WITH
-   2.3.5
+   2.3.23
