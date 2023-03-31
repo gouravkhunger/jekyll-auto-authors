@@ -1,7 +1,7 @@
 title: Jekyll::AutoAuthors
 description: >-
   This is an example Jekyll site to showcase how to use the jekyll-auto-authors plugin simplify adding multiple authors support to Jekyll powered blogs.
-url: "https://hostname.gouravkhunger.me"
+url: "https://auto-authors.gouravkhunger.me"
 baseurl: ""
 
 author:
