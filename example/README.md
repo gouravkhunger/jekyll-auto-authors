@@ -2,7 +2,7 @@ This is an example Jekyll site to showcase how to use the `jekyll-auto-authors` 
 
 ### Set up
 
-You can preview this example [here](https://auto-authors.gouravkhunger.me) or set it up locally:
+You can preview this example [here](https://auto-authors.gourav.sh) or set it up locally:
 
 ```
 git clone https://github.com/gouravkhunger/jekyll-auto-authors

@@ -1,7 +1,7 @@
 title: Jekyll::AutoAuthors
 description: >-
   This is an example Jekyll site to showcase how to use the jekyll-auto-authors plugin simplify adding multiple authors support to Jekyll powered blogs.
-url: "https://auto-authors.gouravkhunger.me"
+url: "https://auto-authors.gourav.sh"
 baseurl: ""
 
 author:
@@ -12,10 +12,10 @@ theme: minima
 
 minima:
   social_links:
-    - { platform: github,  user_url: "https://link.gouravkhunger.me/github" }
-    - { platform: youtube, user_url: "https://link.gouravkhunger.me/youtube" }
-    - { platform: twitter, user_url: "https://link.gouravkhunger.me/twitter" }
-    - { platform: stackoverflow, user_url: "https://link.gouravkhunger.me/stackoverflow" }
+    - { platform: github,  user_url: "https://l.gourav.sh/github" }
+    - { platform: youtube, user_url: "https://l.gourav.sh/youtube" }
+    - { platform: twitter, user_url: "https://l.gourav.sh/twitter" }
+    - { platform: stackoverflow, user_url: "https://l.gourav.sh/stackoverflow" }
 
 header_pages:
   - /author/janedoe/index.html
