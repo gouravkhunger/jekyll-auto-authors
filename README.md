@@ -135,7 +135,7 @@ username2:
     github: 'user2'
 
 test:
-  excluded: true # Skips author from autopage generation if they have no post assigned.
+  exclude: true # Skips author from autopage generation only if they have no post assigned.
   name: 'Test user'
   bio: 'Bio of test user'
   website: 'http://test.com'

@@ -15,7 +15,7 @@ janedoe:
     twitter: "jane_doe"
 
 test1:
-  excluded: true # testing the excluded attribute
+  exclude: true # testing the exclude attribute
   name: "test1"
   bio: "Test is a demo author 1"
   email: "test1@test.com"

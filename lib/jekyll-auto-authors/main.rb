@@ -74,9 +74,9 @@ module Jekyll
           author_data = YAML::load(File.read(authors_config["data"]))
 
           author_data.each do | author, data |
-            # The excluded attribute ignores authors from autopage generation
+            # The exclude attribute ignores authors from autopage generation
             # NOTE: The attribute is overriden if the author has at least 1 post assigned to them.
-            if !finished_pages.include?(author) and !data["excluded"]
+            if !finished_pages.include?(author) and !data["exclude"]
               # create pages for pending authors with specified layouts
               authors_config['layouts'].each do | layout_name |
                 createauthorpage_lambda.call(authors_config, pagination_config, layout_name, author, author)

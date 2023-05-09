@@ -48,7 +48,7 @@ autopages:
   authors:
     enabled: true
     data: '_data/authors.yml' # Data file with the author details
-    exclude: ["test2", "abc"] # Force exclude autopages for author even if they have posts assigned
+    exclude: ["test2", "abc"] # Force skip autopages for author even if they have posts assigned
     layouts: 
       - 'author.html' # We'll define this layout later
     title: 'Posts by :author'
