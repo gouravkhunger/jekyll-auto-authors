@@ -19,7 +19,11 @@
 
         <div class="trigger">
           {%- for author in site.data.authors -%}
+            {% if author[1].exclude != true %}
+            {% unless site.autopages.authors.exclude contains author[0] %}
             <a class="page-link" href="/author/{{ author[0] | relative_url }}">Posts by {{ author[1].name | escape }}</a>
+            {% endunless %}
+            {% endif %}
           {%- endfor -%}
         </div>
       </nav>
