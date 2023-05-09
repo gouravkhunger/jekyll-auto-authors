@@ -133,6 +133,15 @@ username2:
     twitter: '@user2'
     github: 'user2'
 
+test:
+  excluded: true # Skips author from autopage generation if they have no post assigned.
+  name: 'Test user'
+  bio: 'Bio of test user'
+  website: 'http://test.com'
+  socials:
+    twitter: '@test'
+    github: 'test'
+
 # and so on
 ```
 
