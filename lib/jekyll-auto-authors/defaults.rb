@@ -8,8 +8,10 @@ module Jekyll
       "data" => "_data/authors.yml", # The data file inside _data/ folder that contains author information.
       "layouts" => ["authors.html"], # The layout file inside _layouts/ folder to use for the author pages.
 
+      "exclude" => [], # The list of authors to **force** skip processing an autopage for.
+
       "title" => "Posts by :author", # :author is replaced by author name.
-      "permalink" => "/author/:author", # :author is customizable elements
+      "permalink" => "/author/:author", # :author is customizable elements.
 
       "slugify" => {
         "mode" => "none", # [raw, default, pretty, ascii or latin], none gives back the same string.

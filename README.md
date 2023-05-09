@@ -97,6 +97,7 @@ autopages:
   authors:
     enabled: true
     data: '_data/authors.yml' # Data file with the author details
+    exclude: [ "author1", "author2" ] # Force exclude certain authors from autopage generation
     layouts: 
       - 'author.html' # We'll define this layout later
     title: 'Posts by :author'
@@ -132,6 +133,15 @@ username2:
   socials:
     twitter: '@user2'
     github: 'user2'
+
+test:
+  exclude: true # Skips author from autopage generation only if they have no post assigned.
+  name: 'Test user'
+  bio: 'Bio of test user'
+  website: 'http://test.com'
+  socials:
+    twitter: '@test'
+    github: 'test'
 
 # and so on
 ```

@@ -13,3 +13,21 @@ janedoe:
   socials:
     github: "jane-doe"
     twitter: "jane_doe"
+
+test1:
+  exclude: true # testing the exclude attribute
+  name: "test1"
+  bio: "Test is a demo author 1"
+  email: "test1@test.com"
+  socials:
+    github: "test1"
+    twitter: "test1"
+
+# test2 is excluded via exclude attribute for authors autopage config in _config.yml
+test2:
+  name: "test2"
+  bio: "Test is a demo author 2"
+  email: "test2@test.com"
+  socials:
+    github: "test2"
+    twitter: "test2"
