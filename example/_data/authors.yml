@@ -13,3 +13,12 @@ janedoe:
   socials:
     github: "jane-doe"
     twitter: "jane_doe"
+
+test:
+  excluded: true # testing the excluded attribute
+  name: "test"
+  bio: "Test is a demo author"
+  email: "test@test.com"
+  socials:
+    github: "test"
+    twitter: "test"
