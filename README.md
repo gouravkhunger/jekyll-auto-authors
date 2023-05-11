@@ -97,7 +97,8 @@ autopages:
   authors:
     enabled: true
     data: '_data/authors.yml' # Data file with the author details
-    exclude: [ "author1", "author2" ] # Force exclude certain authors from autopage generation
+    # Uncomment the line below to force exclude certain authors from autopage generation.
+    # exclude: [ "author1", "author2" ]
     layouts: 
       - 'author.html' # We'll define this layout later
     title: 'Posts by :author'

@@ -12,6 +12,9 @@ module Jekyll
         autopage_config = Jekyll::Utils.deep_merge_hashes(PaginateV2::AutoPages::DEFAULT, site.config["autopages"] || {})
         pagination_config = Jekyll::Utils.deep_merge_hashes(PaginateV2::Generator::DEFAULT, site.config["pagination"] || {})
 
+        # Hack for exclude logic to be used later
+        autopage_config["authors"]["exclude"] ||= []
+
         # load the configs for jekyll-auto-authors (this plugin).
         authors_config = Jekyll::Utils.deep_merge_hashes(DEFAULT, site.config["autopages"]["authors"] || {})
 
