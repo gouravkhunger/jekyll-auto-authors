@@ -1,5 +1,10 @@
 # Jekyll::AutoAuthors
 
+[![Gem Version](https://img.shields.io/gem/v/jekyll-auto-authors)][ruby-gems]
+[![Gem Total Downloads](https://img.shields.io/gem/dt/jekyll-auto-authors)][ruby-gems]
+
+[ruby-gems]: https://rubygems.org/gems/jekyll-auto-authors
+
 This plugin integrates with the `jekyll-paginate-v2` gem to provide seamless multiple authors support for jekyll powered publications.
 
 Supporting multiple authors inside a jekyll plugin has been a challenge from long. Here are some references to the issue dating to a long time ago:
