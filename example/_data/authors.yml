@@ -17,7 +17,7 @@ janedoe:
 test1:
   exclude: true # testing the exclude attribute
   name: "test1"
-  bio: "Test is a demo author 1"
+  bio: "This is demo author 1"
   email: "test1@test.com"
   socials:
     github: "test1"
@@ -26,8 +26,17 @@ test1:
 # test2 is excluded via exclude attribute for authors autopage config in _config.yml
 test2:
   name: "test2"
-  bio: "Test is a demo author 2"
+  bio: "This is demo author 2"
   email: "test2@test.com"
   socials:
     github: "test2"
     twitter: "test2"
+
+# test3 is not excluded so will get rendered but with a "No posts yet." message
+test3:
+  name: "test3"
+  bio: "This is demo author 3"
+  email: "test3@test.com"
+  socials:
+    github: "test3"
+    twitter: "test3"

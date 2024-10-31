@@ -8,15 +8,16 @@ layout: base
 <p>{{ author.bio }}</p>
 
 {% assign links = author.socials %}
-<a href="{{ link.twitter }}">Twitter</a>
-<a href="{{ link.github }}">GitHub</a>
+<a href="https://x.com/{{ links.twitter }}" target="_blank">Twitter</a>
+<a href="https://github.com/{{ links.github }}" target="_blank">GitHub</a>
 
 <br /><br />
 
-<h2>{{ page.title }}</h2>
-
 {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
 
+{% assign arrSize = paginator.posts | size %}
+{% if arrSize > 0 %}
+<h2>{{ page.title }}</h2>
 {% for post in paginator.posts %}
 <ul class="post-list">
   <li>
@@ -32,6 +33,9 @@ layout: base
   </li>
 </ul>
 {% endfor %}
+{% else %}
+<h2>No posts yet.</h2>
+{% endif %}
 
 {% if paginator.total_pages > 1 %}
 <div class="pager">
