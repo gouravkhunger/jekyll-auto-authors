@@ -5,7 +5,7 @@ module Jekyll
     DEFAULT = {
       "enabled" => false, # Enable or disable the plugin.
 
-      "data" => "_data/authors.yml", # The data file inside _data/ folder that contains author information.
+      "data" => nil, # The path to file that contains authors information. example: "_data/authors.yml"
       "layouts" => ["authors.html"], # The layout file inside _layouts/ folder to use for the author pages.
 
       "exclude" => [], # The list of authors to **force** skip processing an autopage for.

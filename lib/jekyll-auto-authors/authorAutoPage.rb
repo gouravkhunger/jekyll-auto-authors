@@ -12,14 +12,17 @@ module Jekyll
         set_autopage_data_lambda = lambda do | in_config |
           in_config["author"] = author
 
-          if autopage_config["data"].nil?
-            return
-          end
+          return if autopage_config["data"].nil?
 
-          # if a data file containing authors is not nil, transfer it to paginator object
-          # so that it can be used in the pagination template
-          author_data = YAML::load(File.read(autopage_config["data"]))
-          in_config["author_data"] = author_data[author_name]
+          # if the data file containing authors info is not nil, transfer current author's data
+          # to the paginator object so that it can be used in the pagination template
+          author_data = YAML::load(File.read(autopage_config["data"])) || {}
+
+          if author_data.key?(author_name)
+            in_config["author_data"] = author_data[author_name]
+          else
+            Jekyll.logger.warn "Author Pages:", "Data for author '#{author_name}' not found. Page will be generated without data."
+          end
         end
 
         # Lambdas to return formatted permalink and title.
