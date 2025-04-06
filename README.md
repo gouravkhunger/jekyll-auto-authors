@@ -19,7 +19,7 @@ I faced similar problems while managing multiple authors at [Genics Blog](https:
 
 If you want to achieve any of the following:
 
-- Show author pages that list an author's details.
+- Automatically generate author pages that list an author's details.
   
   The details can be anything, like name, bio, portfolio website, social media links, etc.
 
@@ -27,10 +27,11 @@ If you want to achieve any of the following:
 
   The posts must be paginated. This means if there are a lot of posts, we want to show next and previous buttons for navigation.
 
-- You don't want to manually write anything implementation for the generated pages.
-- You just want to drop in a `author: username` to the frontmatter of post and it should add the post to the author's page.
+- The pages should be generated even if the author has no posts written.
+- You just want to drop in a `author: username` to the frontmatter of post and it should add the post to the author's page with the least required configuration.
+- Adding new authors should not require restarting the jekyll server.
 
-The plugin does exactly this!
+The plugin does exactly that!
 
 ## Installation
 
@@ -63,7 +64,7 @@ And then execute:
 
 This plugin fits well inside the configuration for `jekyll-paginate-v2` plugin.
 
-First, you need to set pagination configuration inside `_config.yml` file. This is similar to what the pagination plugin does.
+First, you need to set pagination configuration inside `_config.yml` file. This is similar to what the pagination plugin requires.
 
 ```yml
 pagination:
@@ -75,11 +76,11 @@ pagination:
   sort_reverse: true
 ```
 
-This configuration will be used for the pagination on the generated author pages. The above example defines that each page should get 9 posts at max. The permalink of first page is same, but the later pages get `/page/:num` appended to it. `:num` gets converted to the page number.
+This configuration will be used for pagination on the generated author pages. The above example defines that each page should get 9 posts at max. The permalink of first page is same, but the later pages get `/page/:num` appended to it. `:num` gets converted to the page number.
 
 To learn more about the pagination setup, please refer to the [pagionation guide](https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-GENERATOR.md) of `jekyll-paginate-v2` plugin.
 
-Now we'll define the autopages config for authors. `jekyll-paginate-v2` has autopage support for tags, categories and collections by default. [Read more on Autopages](https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-AUTOPAGES.md).
+Now we'll define the autopages config. `jekyll-paginate-v2` has built-in autopage support for tags, categories and collections. [Read more on Autopages](https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-AUTOPAGES.md).
 
 But it doesn't support autopages for authors. Adding the `jekyll-auto-authors` plugin makes it possible!
 
@@ -101,11 +102,11 @@ autopages:
   # Add this block
   authors:
     enabled: true
-    data: '_data/authors.yml' # Data file with the author details
-    # Uncomment the line below to force exclude certain authors from autopage generation.
+    data: '_data/authors.yml' # Data file with the author info (optional, but recommended). More on this later.
+    # Uncomment the line below to force exclude certain author usernames from autopage generation.
     # exclude: [ "author1", "author2" ]
     layouts: 
-      - 'author.html' # We'll define this layout later
+      - 'author.html' # We'll define this layout in the next step.
     title: 'Posts by :author'
     permalink: '/author/:author/'
     slugify:
@@ -115,85 +116,42 @@ autopages:
 
 That's it for the autopages and pagination configuration.
 
-### Optional
+## Template
 
-You might want to render additional details for each author other than the username.
+For each author that the plugin discovers in your posts, it will generate a page using the `layouts` defined in the config.
 
-For an example, let's take a minimal `_data/authors.yml` file. Usernames should be defined at the top level. The plugin provides you the freedom to define particular author's data as you want.
-
-Once you define the usernames, all the data for an author is passed on to the liquid template inside `page.pagination.author_data` variable so you can render it as you wish!
-
-```yml
-username1:
-  name: 'User 1'
-  bio: 'Bio of user 1'
-  website: 'http://user1.com'
-  socials:
-    twitter: '@user1'
-    github: 'user1'
-
-username2:
-  name: 'User 2'
-  bio: 'Bio of user 2'
-  website: 'http://user2.com'
-  socials:
-    twitter: '@user2'
-    github: 'user2'
-
-test:
-  exclude: true # Skips author from autopage generation only if they have no post assigned.
-  name: 'Test user'
-  bio: 'Bio of test user'
-  website: 'http://test.com'
-  socials:
-    twitter: '@test'
-    github: 'test'
-
-# and so on
-```
-
-Let's define a basic template for the `author.html` layout so you get a gist of how to use it:
+Let's see a basic layout called `author.html` so you get a gist of how to render posts for the author:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- This has the username of author. The one that you set with "author: name" in front-matter-->
+<!--
+  page.pagination.author stores the username of the currently-being-rendered author.
+  The one that you set with "author: name" in front-matter.
+-->
 {% assign author_username = page.pagination.author %}
 
-<!-- Use page.pagination.author_data only if you have data file setup correctly -->
-{% assign author = page.pagination.author_data %}
-<!--
-  Now you can use the author variable anyhow.
-  It has all the data as defined inside _data/authors.yml for the current username.
--->
-
-  <head>
-    <!-- See how we can use values inside the author variable. -->
-    <meta name="description" content={{ author.bio }}>
-    <!-- other stuff -->
-  </head>
-
   <body>
-    <h1>{{ author.name }}</h1>
-    <p>{{ author.bio }}</p>
-    <a href="{{ author.website }}">Portfolio</a>
-    {% assign links = author.socials %}
-    <a href="{{ link.twitter }}">Twitter</a>
-    <a href="{{ link.github }}">GitHub</a>
+    <h1>Posts by {{ author_username }}</h1>
 
     <!--
       The main logic for rendering an author's posts resides here.
       The plugin exposes a paginator object that you can use to loop through the post.
       It handles all the pagination logic for you.
     -->
-    {% for post in paginator.posts %}
-      {% include postbox.html %}
-    {% endfor %}
+    {% assign numPosts = paginator.posts | size %}
+    {% if numPosts > 0 %}
+      {% for post in paginator.posts %}
+        {% include postbox.html %}
+      {% endfor %}
+    {% else %}
+    <p>No posts yet.</p>
+    {% endif %}
 
     <!--
-      If there are more pages rendered for current author's posts, show
-      "Previous" / "Next" links for navigation
+      If there are more pages available for the current author's posts, show
+      "Previous" / "Next" links for navigation.
     -->
     {% if paginator.total_pages > 1 %}
     <ul>
@@ -230,15 +188,117 @@ A random post.
 
 Once you run the build, you'll see the author page for `username2` come inside the `_site/author/username2/` directory. If there are a lot of posts by username2, it will generate pagination pages as defined in the `pagination` block of `_config.yml` file.
 
+### Author data (optional)
+
+You might want to render additional details for each author other than the username. Also, you might want to generate a page for an author who hasn't yet written an article.
+
+Both of these requirements can be achieved by defining a data file for the authors.
+
+For an example, let's take a minimal `_data/authors.yml` file. Usernames should be defined at the top level. Other than that, the plugin provides you the flexibility to define the data as you want to.
+
+```yml
+username1:
+  name: 'User 1'
+  bio: 'Bio of user 1'
+  website: 'http://user1.com'
+  socials:
+    twitter: '@user1'
+    github: 'user1'
+
+username2:
+  name: 'User 2'
+  bio: 'Bio of user 2'
+  website: 'http://user2.com'
+  socials:
+    twitter: '@user2'
+    github: 'user2'
+
+test:
+  exclude: true # Skips author page from generation only if they have no post assigned.
+  name: 'Test user'
+  bio: 'Bio of test user'
+  website: 'http://test.com'
+  socials:
+    twitter: '@test'
+    github: 'test'
+
+# and so on, adding new usernames will create a page for them even if they have no posts!
+```
+
+The only reserved keyword here is `exclude`. All authors defined in the data file will have a page rendered for them unless they are excluded by `exclude` in their data - which is a soft exclude that works only when they have no post assigned, or from `_config.yml` - which performs a force exclude.
+
+Once you define the usernames, all the data for an author is passed on to the liquid template inside `page.pagination.author_data` variable so you can render it as you wish!
+
+Here's the updated template showcasing the use of the author data:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- This has the username of author. The one that you set with "author: name" in front-matter-->
+{% assign author_username = page.pagination.author %}
+
+<!-- Use page.pagination.author_data only if you have data file setup correctly -->
+{% assign author = page.pagination.author_data %}
+<!--
+  Now you can use the author variable anyhow.
+  It has all the data as defined inside _data/authors.yml for the current username.
+-->
+
+  <head>
+    <!-- See how we can use values inside the author variable. -->
+    <meta name="description" content="{{ author.bio }}">
+  </head>
+
+  <body>
+    <h1>{{ author.name }}</h1>
+    <p>{{ author.bio }}</p>
+    <a href="{{ author.website }}">Portfolio</a>
+    {% assign links = author.socials %}
+    <a href="{{ links.twitter }}">Twitter</a>
+    <a href="{{ links.github }}">GitHub</a>
+
+    <!-- Rest of the functionality remains the same -->
+  </body>
+
+</html>
+```
+
 ## How does it work?
 
 The `jekyll-paginate-v2` plugin does a great job at paginating tags, categories and collections. But it doesn't include support for author pagination and autopages. And the project hasn't received much of updates lately, and the existing issues and PRs are stale because of which I decided to make an extension plugin for it.
 
 This plugin uses the utilty classes and functions from the `jekyll-paginate-v2` plugin to add custom logic for author page generation.
 
-When you run the site, the plugin will go through the unique authors in the site, generating an initial temporary author page for them. Then it loops through the generated authro pages and processes the page for pagination. Simultaneously, it also passes the author data from the data file to the page to render the author details.
+When you run the site, the plugin will go through the unique authors in the site, generating an initial temporary author page for them. Then it loops through the generated author pages and processes the page for pagination. Simultaneously, it also passes the author data from the data file to the page to render the author details.
 
 Once the pagination pages are generated, they are written to the `_site` folder with the permalink structure you define.
+
+## Side notes
+
+The beauty of using a data file to store authors is that changes in data are reflected without restarting the jekyll server, unlike the `_config.yml` file.
+
+Moreover, all the authors are available in the `site.data.authors` variable, so you can loop through them and show a list of all authors on the homepage or any other page.
+
+```html
+{% for author in site.data.authors %}
+  <a href="{{ site.baseurl }}/author/{{ author[0] }}">
+    <span>{{ author.name }}</span>
+  </a>
+  <p>{{ author.bio }}</p>
+{% endfor %}
+```
+
+Also, a specific author's data can be reused in the post template:
+
+```html
+{% assign author = page.author %}
+{% assign author_data = site.data.authors[author] %}
+<a href="{{ site.baseurl }}/author/{{ author }}">
+  <span>{{ author_data.name }}</span>
+</a>
+<p>{{ author_data.bio }}</p>
+```
 
 ## Need some inspiration?
 
