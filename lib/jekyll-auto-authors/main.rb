@@ -34,15 +34,6 @@ module Jekyll
         createauthorpage_lambda = lambda do | autopage_author_config, pagination_config, layout_name, author, author_original_name |
           # Force skip excluded authors from autopage generation
           return if autopage_author_config["exclude"].include?(author)
-
-          if !autopage_author_config["data"].nil?
-            author_data = YAML::load(File.read(autopage_author_config["data"]))[author_original_name]
-
-            if author_data.nil?
-              Jekyll.logger.warn "Author Pages:", "Author data for '#{author_original_name}' not found. Page will be generated without data."
-            end
-          end
-
           site.pages << AuthorAutoPage.new(site, site.dest, autopage_author_config, pagination_config, layout_name, author, author_original_name)
         end
 
@@ -74,11 +65,11 @@ module Jekyll
         if !authors_config["data"].nil?
           # if a data file containing authors is not nil, then iterate through the specified
           # authors to build author pages for them, even if they don't have posts yet.
-          author_data = YAML::load(File.read(authors_config["data"]))
+          author_data = YAML::load(File.read(authors_config["data"])) || {}
 
           author_data.each do | author, data |
             # The exclude attribute ignores authors from autopage generation unless they have a post assigned.
-            if !finished_pages.include?(author) and !data["exclude"]
+            if !finished_pages.include?(author) && !(data || {}).fetch("exclude", false)
               # create pages for pending authors with specified layouts
               authors_config['layouts'].each do | layout_name |
                 createauthorpage_lambda.call(authors_config, pagination_config, layout_name, author, author)
@@ -87,6 +78,8 @@ module Jekyll
               finished_pages << author
             end
           end
+        else
+          Jekyll.logger.warn "Author Pages:", "Authors data file not specified. Pages will be generated without data."
         end
 
         # Now auto pages for authors have been created, we can generate the pagination logic.
