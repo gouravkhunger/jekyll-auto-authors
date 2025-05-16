@@ -143,7 +143,8 @@ Let's see a basic layout called `author.html` so you get a gist of how to render
     {% assign numPosts = paginator.posts | size %}
     {% if numPosts > 0 %}
       {% for post in paginator.posts %}
-        {% include postbox.html %}
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.excerpt }}</p>
       {% endfor %}
     {% else %}
     <p>No posts yet.</p>
@@ -264,17 +265,7 @@ Here's the updated template showcasing the use of the author data:
 </html>
 ```
 
-## How does it work?
-
-The `jekyll-paginate-v2` plugin does a great job at paginating tags, categories and collections. But it doesn't include support for author pagination and autopages. And the project hasn't received much of updates lately, and the existing issues and PRs are stale because of which I decided to make an extension plugin for it.
-
-This plugin uses the utilty classes and functions from the `jekyll-paginate-v2` plugin to add custom logic for author page generation.
-
-When you run the site, the plugin will go through the unique authors in the site, generating an initial temporary author page for them. Then it loops through the generated author pages and processes the page for pagination. Simultaneously, it also passes the author data from the data file to the page to render the author details.
-
-Once the pagination pages are generated, they are written to the `_site` folder with the permalink structure you define.
-
-## Side notes
+## Additional info
 
 The beauty of using a data file to store authors is that changes in data are reflected without restarting the jekyll server, unlike the `_config.yml` file.
 
@@ -300,6 +291,16 @@ Also, a specific author's data can be reused in the post template:
 <p>{{ author_data.bio }}</p>
 ```
 
+## How does it work?
+
+The `jekyll-paginate-v2` plugin does a great job at paginating tags, categories and collections. But it doesn't include support for author pagination and autopages. And the project hasn't received much of updates lately, and the existing issues and PRs are stale because of which I decided to make an extension plugin for it.
+
+This plugin uses the utilty classes and functions from the `jekyll-paginate-v2` plugin to add custom logic for author page generation.
+
+When you run the site, the plugin will go through the unique authors in the site, generating an initial temporary author page for them. Then it loops through the generated author pages and processes the page for pagination. Simultaneously, it also passes the author data from the data file to the page to render the author details.
+
+Once the pagination pages are generated, they are written to the `_site` folder with the permalink structure you define.
+
 ## Need some inspiration?
 
 We are using this plugin to generate the author pages at [Genics Blog](https://genicsblog.com). Have a look at our [`_config.yml`](https://github.com/genicsblog/theme-files/blob/main/_config.yml) file to see how it works.
@@ -319,3 +320,27 @@ I write frequent programming related content on [Genics Blog](https://genicsblog
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://github.com/gouravkhunger/jekyll-auto-authors/blob/main/LICENSE).
+
+```
+MIT License
+
+Copyright (c) 2022 Gourav Khunger
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
