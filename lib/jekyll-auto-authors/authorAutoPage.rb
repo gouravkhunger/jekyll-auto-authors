@@ -16,7 +16,7 @@ module Jekyll
 
           # if the data file containing authors info is not nil, transfer current author's data
           # to the paginator object so that it can be used in the pagination template
-          author_data = YAML::load(File.read(autopage_config["data"])) || {}
+          author_data = YAML::load(File.read(File.join(site.source, autopage_config["data"]))) || {}
 
           if author_data.key?(author_name)
             in_config["author_data"] = author_data[author_name]
