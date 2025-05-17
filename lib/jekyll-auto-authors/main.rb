@@ -65,7 +65,7 @@ module Jekyll
         if !authors_config["data"].nil?
           # if a data file containing authors is not nil, then iterate through the specified
           # authors to build author pages for them, even if they don't have posts yet.
-          author_data = YAML::load(File.read(authors_config["data"])) || {}
+          author_data = YAML::load(File.read(File.join(site.source, authors_config["data"]))) || {}
 
           author_data.each do | author, data |
             # The exclude attribute ignores authors from autopage generation unless they have a post assigned.
