@@ -305,6 +305,14 @@ Once the pagination pages are generated, they are written to the `_site` folder 
 
 We are using this plugin to generate the author pages at [Genics Blog](https://genicsblog.com). Have a look at our [`_config.yml`](https://github.com/genicsblog/theme-files/blob/main/_config.yml) file to see how it works.
 
+## Used by
+
+<a href="https://github.com/gouravkhunger/jekyll-auto-authors/network/dependents">
+  <img src="https://dependents.info/gouravkhunger/jekyll-auto-authors/image.svg" />
+</a>
+
+Made with [dependents.info](https://dependents.info).
+
 ## The Author
 
 I am a self-taught software developer from India! I am a passionate app developer working on a lot of different kind of projects. If you like this plugin, let me know by supporting me!
