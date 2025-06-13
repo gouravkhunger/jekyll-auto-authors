@@ -2,8 +2,10 @@
 
 [![Gem Version](https://img.shields.io/gem/v/jekyll-auto-authors)][ruby-gems]
 [![Gem Total Downloads](https://img.shields.io/gem/dt/jekyll-auto-authors)][ruby-gems]
+[![Gem Total Dependents](https://dependents.info/gouravkhunger/jekyll-auto-authors/badge)][dependents-info]
 
 [ruby-gems]: https://rubygems.org/gems/jekyll-auto-authors
+[dependents-info]: https://dependents.info/gouravkhunger/jekyll-auto-authors
 
 This plugin integrates with the `jekyll-paginate-v2` gem to provide seamless multiple authors support for jekyll powered publications.
 
@@ -32,6 +34,12 @@ If you want to achieve any of the following:
 - Adding new authors should not require restarting the jekyll server.
 
 The plugin does exactly that!
+
+## Used by
+
+<a href="https://dependents.info/gouravkhunger/jekyll-auto-authors">
+  <img src="https://dependents.info/gouravkhunger/jekyll-auto-authors/image.svg" />
+</a>
 
 ## Installation
 
@@ -304,14 +312,6 @@ Once the pagination pages are generated, they are written to the `_site` folder 
 ## Need some inspiration?
 
 We are using this plugin to generate the author pages at [Genics Blog](https://genicsblog.com). Have a look at our [`_config.yml`](https://github.com/genicsblog/theme-files/blob/main/_config.yml) file to see how it works.
-
-## Used by
-
-<a href="https://github.com/gouravkhunger/jekyll-auto-authors/network/dependents">
-  <img src="https://dependents.info/gouravkhunger/jekyll-auto-authors/image.svg" />
-</a>
-
-Made with [dependents.info](https://dependents.info).
 
 ## The Author
 
